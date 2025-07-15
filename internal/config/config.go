@@ -9,7 +9,7 @@ import (
 )
 
 type HTTPServer struct {
-	Addr string
+	Addr string `yaml:"address" env-required:"true"`
 }
 
 type Config struct {
@@ -18,7 +18,7 @@ type Config struct {
 	HTTPServer  `yaml:"http_server"`
 }
 
-func MustLoad() *Config{
+func MustLoad() *Config {
 	var configPath string
 
 	configPath = os.Getenv("CONFIG_PATH")
@@ -43,7 +43,6 @@ func MustLoad() *Config{
 	if err != nil {
 		log.Fatalf("can not read config file: %s", err.Error())
 	}
-
 
 	return &cfg
 }
