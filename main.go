@@ -10,18 +10,29 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/srajalnikhra/students-api/internal/config"
+	"github.com/codersgyan/students-api/internal/config"
+	"github.com/codersgyan/students-api/internal/http/handlers/student"
+	"github.com/codersgyan/students-api/internal/storage/sqlite"
 )
 
 func main() {
+	// load config
 	cfg := config.MustLoad()
+	// database setup
 
+	storage, err := sqlite.New(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	slog.Info("storage initialized", slog.String("env", cfg.Env), slog.String("version", "1.0.0"))
+
+	// setup router
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome to students api"))
-	})
-
+	router.HandleFunc("POST /api/students", student.New(storage))
+	router.HandleFunc("GET /api/students/{id}", student.GetById(storage))
+	router.HandleFunc("GET /api/students", student.GetList(storage))
 	// setup server
 
 	server := http.Server{
