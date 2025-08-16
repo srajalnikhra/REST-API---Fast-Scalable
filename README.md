@@ -24,6 +24,40 @@ It provides an efficient backend for managing student data with clean routing, m
 
 ## 📂 Project Structure
 
+```
+STUDENTS-API/
+│── config/
+│   └── local.yaml             # App configuration file
+│
+│── internal/
+│   ├── config/
+│   │   └── config.go          # Config loader
+│   │
+│   ├── http/
+│   │   └── handlers/
+│   │       └── student/
+│   │           └── student.go # Student handlers (CRUD)
+│   │
+│   ├── storage/
+│   │   ├── sqlite/
+│   │   │   └── sqlite.go      # SQLite DB setup
+│   │   ├── types/
+│   │   │   └── types.go       # Data models
+│   │   └── storage.go         # Storage interface
+│   │
+│   └── utils/
+│       └── response/
+│           └── response.go    # Response helpers
+│
+│── storage/
+│   └── storage.db             # SQLite database file
+│
+│── .gitignore
+│── go.mod
+│── go.sum
+│── main.go                    # Entry point
+```
+
 
 
 ---
