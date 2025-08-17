@@ -76,29 +76,32 @@ REST-API---Fast-Scalable/
 - SQLite installed  
 
 ### Setup & Run
-```bash
 # Clone the repository
+```bash
 git clone https://github.com/srajalnikhra/REST-API---Fast-Scalable.git
+```
+
+```bash
 cd REST-API---Fast-Scalable
 ```
 
-```bash
 # Install dependencies
+```bash
 go mod tidy
 ```
 
-```bash
 # Run the API
+```bash
 go run main.go
 ```
 
-💡 Future Enhancements
+## 💡 Future Enhancements
 
-🔹 Add authentication & JWT support 🔐
-🔹 Migrate to PostgreSQL/MongoDB for scalability 🗄️
-🔹 Add Docker support for containerized setup 🐳
-🔹 Unit & integration testing 🧪
+- 🔹 Add authentication & JWT support 🔐
+- 🔹 Migrate to PostgreSQL/MongoDB for scalability 🗄️
+- 🔹 Add Docker support for containerized setup 🐳
+- 🔹 Unit & integration testing 🧪
 
-📜 License
+## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
