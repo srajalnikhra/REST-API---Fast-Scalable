@@ -79,7 +79,7 @@ STUDENTS-API/
 ```bash
 # Clone the repository
 git clone https://github.com/srajalnikhra/REST-API---Fast-Scalable.git
-cd students-api
+cd REST-API---Fast-Scalable
 
 # Install dependencies
 go mod tidy
