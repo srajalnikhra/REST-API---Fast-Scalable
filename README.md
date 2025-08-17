@@ -1,5 +1,9 @@
 # Students API - Fast & Scalable | GoLang, Gorilla Mux, SQLite
 
+![Go](https://img.shields.io/badge/Go-1.22+-blue)
+![Database](https://img.shields.io/badge/Database-SQLite-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 🚀 **Students API** is a fast and scalable RESTful API built with **GoLang**, **Gorilla Mux**, and **SQLite**.  
 It provides an efficient backend for managing student data with clean routing, modular structure, and easy configuration.
 
