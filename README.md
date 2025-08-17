@@ -76,7 +76,7 @@ REST-API---Fast-Scalable/
 - SQLite installed  
 
 ### Setup & Run
-# Clone the repository
+#### Clone the repository
 ```bash
 git clone https://github.com/srajalnikhra/REST-API---Fast-Scalable.git
 ```
