@@ -31,7 +31,7 @@ It provides an efficient backend for managing student data with clean routing, m
 ## 📂 Project Structure  
 
 ```plaintext
-STUDENTS-API/
+REST-API---Fast-Scalable/
 │── config/
 │   └── local.yaml             # App configuration file
 │
@@ -100,7 +100,3 @@ This project is licensed under the MIT License.
 
 
 ---
-
-This README is **GitHub ready** — with structure, features, API endpoints, and future enhancements.  
-
-Do you want me to also add **badges** (like Go version, build status, license) at the top for a more polished GitHub profile?
