@@ -1,34 +1,36 @@
-# Students API - Fast & Scalable | GoLang, Gorilla Mux, SQLite
+# Students API – Fast & Scalable | GoLang, SQLite, ServeMux (Go 1.22+)
 
 ![Go](https://img.shields.io/badge/Go-1.22+-blue)
 ![Database](https://img.shields.io/badge/Database-SQLite-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-🚀 **Students API** is a fast and scalable RESTful API built with **GoLang**, **Gorilla Mux**, and **SQLite**.  
-It provides an efficient backend for managing student data with clean routing, modular structure, and easy configuration.
+🚀 **Students API** is a fast and scalable RESTful API built with **GoLang**, **SQLite**, and Go’s modern **`http.ServeMux` (Go 1.22+)**.  
+It provides an efficient backend for managing student data with clean routing, modular structure, structured logging, and easy configuration.  
 
 ---
 
-## 📌 Features
-✅ RESTful API with **CRUD operations** for student data 📚  
-✅ **Gorilla Mux** for routing and middleware support ⚡  
-✅ **SQLite integration** for persistent and lightweight storage 🗄️  
-✅ Configurable using `local.yaml` 🔧  
-✅ Modular design for scalability and maintainability 🏗️  
+## 📌 Features  
+- ✅ RESTful API with **CRUD operations** for student data 📚  
+- ✅ **ServeMux (Go 1.22+)** for clean routing with path parameters ⚡  
+- ✅ **SQLite integration** for lightweight and persistent storage 🗄️  
+- ✅ **Structured logging (`slog`)** for better observability 📊  
+- ✅ Configurable using `local.yaml` 🔧  
+- ✅ Modular design for scalability and maintainability 🏗️  
+- ✅ **Graceful server shutdown** with context ⏹️  
 
 ---
 
-## ⚙️ Tech Stack
-🔹 **Backend:** Golang (Gorilla Mux, net/http)  
-🔹 **Database:** SQLite  
-🔹 **Configuration:** YAML (`local.yaml`)  
-🔹 **Architecture:** REST API with clean separation of concerns (Config, HTTP, Storage, Utils)  
+## ⚙️ Tech Stack  
+- **Backend:** GoLang (net/http, ServeMux, slog)  
+- **Database:** SQLite  
+- **Configuration:** YAML (`local.yaml`)  
+- **Architecture:** REST API with clean separation of concerns (Config, HTTP, Storage, Utils)  
 
 ---
 
-## 📂 Project Structure
+## 📂 Project Structure  
 
-```
+```plaintext
 STUDENTS-API/
 │── config/
 │   └── local.yaml             # App configuration file
@@ -60,6 +62,7 @@ STUDENTS-API/
 │── go.mod
 │── go.sum
 │── main.go                    # Entry point
+
 ```
 
 
@@ -69,7 +72,7 @@ STUDENTS-API/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Go 1.20+  
+- Go 1.22+  
 - SQLite installed  
 
 ### Setup & Run
