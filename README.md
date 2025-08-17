@@ -75,8 +75,8 @@ REST-API---Fast-Scalable/
 - Go 1.22+  
 - SQLite installed  
 
-### Setup & Run
-#### Clone the repository
+## Setup & Run
+### Clone the repository
 ```bash
 git clone https://github.com/srajalnikhra/REST-API---Fast-Scalable.git
 ```
@@ -85,12 +85,12 @@ git clone https://github.com/srajalnikhra/REST-API---Fast-Scalable.git
 cd REST-API---Fast-Scalable
 ```
 
-# Install dependencies
+### Install dependencies
 ```bash
 go mod tidy
 ```
 
-# Run the API
+### Run the API
 ```bash
 go run main.go
 ```
