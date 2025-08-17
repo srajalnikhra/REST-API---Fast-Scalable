@@ -80,12 +80,17 @@ REST-API---Fast-Scalable/
 # Clone the repository
 git clone https://github.com/srajalnikhra/REST-API---Fast-Scalable.git
 cd REST-API---Fast-Scalable
+```
 
+```bash
 # Install dependencies
 go mod tidy
+```
 
+```bash
 # Run the API
 go run main.go
+```
 
 💡 Future Enhancements
 
@@ -97,6 +102,3 @@ go run main.go
 📜 License
 
 This project is licensed under the MIT License.
-
-
----
