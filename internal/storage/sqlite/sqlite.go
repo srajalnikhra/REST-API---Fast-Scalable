@@ -3,6 +3,9 @@ package sqlite
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/codersgyan/students-api/internal/config"
 	"github.com/codersgyan/students-api/internal/storage/types"
@@ -14,21 +17,33 @@ type Sqlite struct {
 }
 
 func New(cfg *config.Config) (*Sqlite, error) {
+	// Ensure storage directory exists
+	storageDir := filepath.Dir(cfg.StoragePath)
+	if _, err := os.Stat(storageDir); os.IsNotExist(err) {
+		err = os.MkdirAll(storageDir, os.ModePerm)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create storage directory: %w", err)
+		}
+	}
+
+	// Open or create the database file
 	db, err := sql.Open("sqlite3", cfg.StoragePath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
 
+	// Create students table if not exists
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS students (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT,
-	email TEXT,
-	age INTEGER
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT,
+		email TEXT,
+		age INTEGER
 	)`)
-
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create table: %w", err)
 	}
+
+	log.Println("Database ready at:", cfg.StoragePath)
 
 	return &Sqlite{
 		Db: db,
@@ -36,7 +51,6 @@ func New(cfg *config.Config) (*Sqlite, error) {
 }
 
 func (s *Sqlite) CreateStudent(name string, email string, age int) (int64, error) {
-
 	stmt, err := s.Db.Prepare("INSERT INTO students (name, email, age) VALUES (?, ?, ?)")
 	if err != nil {
 		return 0, err
@@ -61,15 +75,13 @@ func (s *Sqlite) GetStudentById(id int64) (types.Student, error) {
 	if err != nil {
 		return types.Student{}, err
 	}
-
 	defer stmt.Close()
 
 	var student types.Student
-
 	err = stmt.QueryRow(id).Scan(&student.Id, &student.Name, &student.Email, &student.Age)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return types.Student{}, fmt.Errorf("no student found with id %s", fmt.Sprint(id))
+			return types.Student{}, fmt.Errorf("no student found with id %d", id)
 		}
 		return types.Student{}, fmt.Errorf("query error: %w", err)
 	}
@@ -82,26 +94,21 @@ func (s *Sqlite) GetStudents() ([]types.Student, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer stmt.Close()
 
 	rows, err := stmt.Query()
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	var students []types.Student
-
 	for rows.Next() {
 		var student types.Student
-
 		err := rows.Scan(&student.Id, &student.Name, &student.Email, &student.Age)
 		if err != nil {
 			return nil, err
 		}
-
 		students = append(students, student)
 	}
 
