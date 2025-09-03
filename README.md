@@ -1,6 +1,7 @@
 # Students API – Fast & Scalable | GoLang, SQLite, ServeMux (Go 1.22+)
 
 ![Go](https://img.shields.io/badge/Go-1.22+-blue)
+![API](https://img.shields.io/badge/Type-REST%20API-green)
 ![Database](https://img.shields.io/badge/Database-SQLite-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
