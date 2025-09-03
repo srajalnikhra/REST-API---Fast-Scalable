@@ -17,7 +17,6 @@ type Sqlite struct {
 }
 
 func New(cfg *config.Config) (*Sqlite, error) {
-	// Ensure storage directory exists
 	storageDir := filepath.Dir(cfg.StoragePath)
 	if _, err := os.Stat(storageDir); os.IsNotExist(err) {
 		err = os.MkdirAll(storageDir, os.ModePerm)
@@ -26,13 +25,13 @@ func New(cfg *config.Config) (*Sqlite, error) {
 		}
 	}
 
-	// Open or create the database file
+	
 	db, err := sql.Open("sqlite3", cfg.StoragePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
 
-	// Create students table if not exists
+	
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS students (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name TEXT,
@@ -113,4 +112,50 @@ func (s *Sqlite) GetStudents() ([]types.Student, error) {
 	}
 
 	return students, nil
+}
+
+func (s *Sqlite) UpdateStudent(id int64, student types.Student) error {
+	stmt, err := s.Db.Prepare("UPDATE students SET name = ?, email = ?, age = ? WHERE id = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	result, err := stmt.Exec(student.Name, student.Email, student.Age, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no student found with id %d", id)
+	}
+	return nil
+}
+
+func (s *Sqlite) DeleteStudent(id int64) error {
+	stmt, err := s.Db.Prepare("DELETE FROM students WHERE id = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	result, err := stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no student found with id %d", id)
+	}
+	return nil
 }

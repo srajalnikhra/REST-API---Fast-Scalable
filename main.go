@@ -16,9 +16,9 @@ import (
 )
 
 func main() {
-	// load config
+	
 	cfg := config.MustLoad()
-	// database setup
+	
 
 	storage, err := sqlite.New(cfg)
 	if err != nil {
@@ -27,14 +27,16 @@ func main() {
 
 	slog.Info("storage initialized", slog.String("env", cfg.Env), slog.String("version", "1.0.0"))
 
-	// setup router
+	
 	router := http.NewServeMux()
 
 	router.HandleFunc("POST /api/students", student.New(storage))
 	router.HandleFunc("GET /api/students/{id}", student.GetById(storage))
 	router.HandleFunc("GET /api/students", student.GetList(storage))
-	// setup server
+	router.HandleFunc("PUT /api/students/{id}", student.UpdateById(storage))
+	router.HandleFunc("DELETE /api/students/{id}", student.DeleteById(storage))
 
+	
 	server := http.Server{
 		Addr:    cfg.Addr,
 		Handler: router,
