@@ -147,6 +147,6 @@ func DeleteById(storage storage.Storage) http.HandlerFunc {
 			return
 		}
 
-		response.WriteJson(w, http.StatusNoContent, nil)
+		response.WriteJson(w, http.StatusOK, map[string]string{"message": "student deleted successfully",})
 	}
 }
