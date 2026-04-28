@@ -12,11 +12,14 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// Sqlite holds the underlying database connection instance
 type Sqlite struct {
 	Db *sql.DB
 }
 
+// New initializes a SQLite database connection and creates required tables
 func New(cfg *config.Config) (*Sqlite, error) {
+	// Ensure the storage directory exists, creating it if necessary
 	storageDir := filepath.Dir(cfg.StoragePath)
 	if _, err := os.Stat(storageDir); os.IsNotExist(err) {
 		err = os.MkdirAll(storageDir, os.ModePerm)
@@ -25,13 +28,13 @@ func New(cfg *config.Config) (*Sqlite, error) {
 		}
 	}
 
-	
+	// Open connection to SQLite database
 	db, err := sql.Open("sqlite3", cfg.StoragePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
 
-	
+	// Create the students table if it doesn't already exist
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS students (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name TEXT,
@@ -49,6 +52,7 @@ func New(cfg *config.Config) (*Sqlite, error) {
 	}, nil
 }
 
+// CreateStudent inserts a new student record into the database
 func (s *Sqlite) CreateStudent(name string, email string, age int) (int64, error) {
 	stmt, err := s.Db.Prepare("INSERT INTO students (name, email, age) VALUES (?, ?, ?)")
 	if err != nil {
@@ -69,6 +73,7 @@ func (s *Sqlite) CreateStudent(name string, email string, age int) (int64, error
 	return lastId, nil
 }
 
+// GetStudentById retrieves a single student record based on their unique ID
 func (s *Sqlite) GetStudentById(id int64) (types.Student, error) {
 	stmt, err := s.Db.Prepare("SELECT id, name, email, age FROM students WHERE id = ? LIMIT 1")
 	if err != nil {
@@ -88,6 +93,7 @@ func (s *Sqlite) GetStudentById(id int64) (types.Student, error) {
 	return student, nil
 }
 
+// GetStudents retrieves all student records from the database
 func (s *Sqlite) GetStudents() ([]types.Student, error) {
 	stmt, err := s.Db.Prepare("SELECT id, name, email, age FROM students")
 	if err != nil {
@@ -114,6 +120,7 @@ func (s *Sqlite) GetStudents() ([]types.Student, error) {
 	return students, nil
 }
 
+// UpdateStudent modifies an existing student record identified by their ID
 func (s *Sqlite) UpdateStudent(id int64, student types.Student) error {
 	stmt, err := s.Db.Prepare("UPDATE students SET name = ?, email = ?, age = ? WHERE id = ?")
 	if err != nil {
@@ -137,6 +144,7 @@ func (s *Sqlite) UpdateStudent(id int64, student types.Student) error {
 	return nil
 }
 
+// DeleteStudent removes a student record from the database
 func (s *Sqlite) DeleteStudent(id int64) error {
 	stmt, err := s.Db.Prepare("DELETE FROM students WHERE id = ?")
 	if err != nil {

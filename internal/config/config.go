@@ -8,40 +8,43 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
+// HTTPServer holds the network configuration settings
 type HTTPServer struct {
 	Addr string `yaml:"address" env-required:"true"`
 }
 
+// Config represents the application's root configuration structure
 type Config struct {
 	Env         string `yaml:"env" env:"ENV" env-required:"true"`
 	StoragePath string `yaml:"storage_path" env-required:"true"`
 	HTTPServer  `yaml:"http_server"`
 }
 
+// MustLoad retrieves application configuration or terminates on failure
 func MustLoad() *Config {
 	var configPath string
 
-	// 1. Check environment variable
+	// Attempt to load configuration path from environment variables
 	configPath = os.Getenv("CONFIG_PATH")
 
-	// 2. If empty, check command-line flag
+	// Fallback to command-line flag if environment variable is not set
 	if configPath == "" {
 		flags := flag.String("config", "", "path to the configuration file")
 		flag.Parse()
 		configPath = *flags
 	}
 
-	// 3. If still empty, use default path
+	// Fallback to default local configuration path if still empty
 	if configPath == "" {
 		configPath = "config/local.yaml"
 	}
 
-	// 4. Verify file exists
+	// Verify the configuration file exists before proceeding
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		log.Fatalf("config file does not exist: %s", configPath)
 	}
 
-	// 5. Read config
+	// Parse the YAML configuration file into the struct
 	var cfg Config
 	err := cleanenv.ReadConfig(configPath, &cfg)
 	if err != nil {
